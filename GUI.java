@@ -1,5 +1,14 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package Apples;
+
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -32,6 +41,7 @@ public class GUI extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("cc.png")).getImage());
         setType(java.awt.Window.Type.POPUP);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
