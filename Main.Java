@@ -1,3 +1,5 @@
+package Apples;
+
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,7 +20,7 @@ import java.util.regex.Pattern;
  *
  * @author Nikky
  */
-public class Main extends javax.swing.JDialog {
+public class Main extends javax.swing.JFrame {
 
     /**
      * Creates new form Main
@@ -27,8 +30,7 @@ public class Main extends javax.swing.JDialog {
     public static String Password;
     
     
-    public Main(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public Main(java.awt.Frame parent) {
         initComponents();
     }
 
@@ -46,6 +48,7 @@ public class Main extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("cc.png")).getImage());
 
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
@@ -66,7 +69,7 @@ public class Main extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
                     .addComponent(jTextField1))
                 .addContainerGap())
         );
@@ -88,6 +91,9 @@ public class Main extends javax.swing.JDialog {
         try{
             String temp = jTextField1.getText();
             jTextField1.setText("");
+            try{
+                temp = temp.replace("/", "!c ");
+            }catch(Exception e){}
             try{
                 Connect.writer.write(temp);
                 Connect.writer.newLine();
@@ -127,7 +133,7 @@ public class Main extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Main dialog = new Main(new javax.swing.JFrame(), true);
+                Main dialog = new Main(new javax.swing.JFrame());
                 String[] s = {"aPples"};
                 GUI.main(s);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -136,6 +142,7 @@ public class Main extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
+                
                 dialog.setVisible(true);
             }
         });
@@ -143,7 +150,7 @@ public class Main extends javax.swing.JDialog {
     
     // Variables declaration - do not modify                     
     private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JTextArea jTextArea1;
+    public static javax.swing.JTextArea jTextArea1;
     private static javax.swing.JTextField jTextField1;
     // End of variables declaration                   
 
@@ -240,21 +247,32 @@ public class Main extends javax.swing.JDialog {
                 while(true){
                     try{
                         while((s = reader.readLine())!= null){
-                            Println(f3(f2(f1(s))));
+                            Println(f3(s));
                         }
                     }catch(Exception e){Println("Connection Died!");break;}
                 }
             }
             public static String f3(String msg){
                 try{
-                    return msg.replace("[Server ]", "[Server]");
-                }catch(Exception e){return msg;}
+                    return f2(msg.replaceAll("\u001B\\[[;\\d]*m", ""));
+                }catch(Exception e){return f2(msg);}
             }
             public static String f2(String msg){
                 try{
-                    return msg.replace("[INFO] SimpleMessage[message=", "[INFO] ");
+                    return f1(msg).replace("[INFO] SimpleMessage[message=", "[INFO] ");
+                }catch(Exception e){return f1(msg);}
+            }
+            
+            public static String replaceLast(String text, String regex, String replacement) {
+                return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
+            }
+            
+            public static String f1(String msg){
+                try{
+                    return replaceLast(msg,"]","");
                 }catch(Exception e){return msg;}
             }
+            /*
             public static String f1(String msg){
                 try{
                     Pattern p = Pattern.compile("\\[[0-9]+;[0-9]+;[0-9]+m");
@@ -262,7 +280,10 @@ public class Main extends javax.swing.JDialog {
                     String temp = m.replaceAll("");
                     return temp;
                 }catch(Exception e){return msg;}
-            }
+            }*/
+        }  
+        public static String replaceLast(String text, String regex, String replacement) {
+            return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
         }
     }
 }
