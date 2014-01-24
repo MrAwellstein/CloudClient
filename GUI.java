@@ -46,9 +46,9 @@ public class GUI extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jTextField1.setText("Username Goes Here");
+        jTextField1.setText("Username");
 
-        jTextField2.setText("Password Goes Here");
+        jTextField2.setText("Password");
 
         jTextField3.setText("IP:Port");
 
